@@ -3,6 +3,7 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { GoogleAnalytics } from "@/components/analytics";
+import { Righteous } from "next/font/google"
 import { FloatingChat } from "@/components/floating-chat";
 
 const righteous = Righteous({
