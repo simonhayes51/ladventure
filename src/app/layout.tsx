@@ -5,10 +5,10 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { GoogleAnalytics } from "@/components/analytics";
 
-const Space_Grotesk = Space_Grotesk({
-  variable: "--font-Space_Grotesk",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${Space_Grotesk.variable} antialiased min-h-screen flex flex-col font-sans`}
+        className={`${spaceGrotesk.variable} antialiased min-h-screen flex flex-col font-sans`}
       >
         <GoogleAnalytics />
         <Navbar />
