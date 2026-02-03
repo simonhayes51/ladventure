@@ -25,9 +25,9 @@ export function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="relative w-32 h-12">
+            <div className="relative w-40 h-12">
                <Image 
-                 src="/ladventure-logo.png" 
+                 src="/logo.svg" 
                  alt="Ladventure" 
                  fill 
                  className="object-contain"
