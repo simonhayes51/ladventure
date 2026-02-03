@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { BookingModal } from "@/components/booking-modal"
+import { trackEvent } from "@/lib/analytics"
 
 export function CtaSection() {
   const [isBookingOpen, setIsBookingOpen] = useState(false)
@@ -21,7 +22,10 @@ export function CtaSection() {
         </p>
         <div className="block">
           <Button 
-            onClick={() => setIsBookingOpen(true)}
+            onClick={() => {
+              trackEvent({ action: "cta_click", category: "cta_section", label: "start_adventure" })
+              setIsBookingOpen(true)
+            }}
             size="lg"
             className="h-16 px-12 text-lg bg-secondary text-secondary-foreground hover:bg-secondary border-2 border-foreground retro-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
           >

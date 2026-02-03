@@ -18,6 +18,7 @@ export function Navbar() {
     { href: "#how-it-works", label: "How It Works" },
     { href: "#examples", label: "Examples" },
     { href: "#pricing", label: "Pricing" },
+    { href: "/guides", label: "Guides" },
   ]
 
   return (
@@ -25,20 +26,20 @@ export function Navbar() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="relative h-12 flex items-center">
-               {!logoError ? (
-                 <img 
-                   src="/logo.png" 
-                   alt="Ladventure" 
-                   className="h-full w-auto object-contain"
-                   onError={() => setLogoError(true)}
-                 />
-               ) : (
-                 <span className="text-3xl font-display text-primary retro-text-shadow uppercase tracking-wider">
-                   Ladventure
-                 </span>
-               )}
+          <Link href="/" className="flex items-center gap-2 -ml-4 md:-ml-10">
+            <div className="relative h-32 md:h-40 flex items-center">
+              {!logoError ? (
+                <img 
+                  src="/logo.png" 
+                  alt="Ladventure" 
+                  className="h-36 md:h-48 w-auto object-contain -mb-16 md:-mb-20"
+                  onError={() => setLogoError(true)}
+                />
+              ) : (
+                <span className="text-3xl font-display text-primary retro-text-shadow uppercase tracking-wider">
+                  Ladventure
+                </span>
+              )}
             </div>
           </Link>
 

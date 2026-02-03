@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { BookingModal } from "@/components/booking-modal"
+import { trackEvent } from "@/lib/analytics"
 
 const features = [
   "Custom detailed itinerary",
@@ -76,7 +77,10 @@ export function Pricing() {
             </ul>
 
             <Button 
-              onClick={() => setIsBookingOpen(true)}
+              onClick={() => {
+                trackEvent({ action: "payment_click", category: "pricing", label: "get_started" })
+                setIsBookingOpen(true)
+              }}
               size="lg"
               className="w-full text-lg h-14 bg-secondary text-secondary-foreground hover:bg-secondary border-2 border-foreground retro-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
             >

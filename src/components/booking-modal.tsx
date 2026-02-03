@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/lib/analytics";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -29,13 +30,21 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
     }
   }, [prefilledDestination]);
 
+  useEffect(() => {
+    if (isOpen) {
+      trackEvent({ action: "modal_open", category: "booking", label: "booking_modal" });
+    }
+  }, [isOpen]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    trackEvent({ action: "form_submit", category: "lead", label: "booking_form" });
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setIsSuccess(true);
+    trackEvent({ action: "form_success", category: "lead", label: "booking_form" });
     // Reset after a delay or keep success state
   };
 
