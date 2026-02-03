@@ -72,6 +72,19 @@ export function FloatingChat() {
           </button>
         </div>
       )}
+      {!isOpen && (
+        <button
+          type="button"
+          onClick={togglePanel}
+          className="flex items-center gap-2 bg-secondary text-secondary-foreground border-2 border-foreground retro-shadow px-4 py-3 font-bold uppercase"
+          aria-label="Open live chat"
+          aria-expanded={isOpen}
+          aria-controls="floating-chat-panel"
+        >
+          <MessageCircle className="h-5 w-5" />
+          Chat
+        </button>
+      )}
       <button
         type="button"
         onClick={togglePanel}
