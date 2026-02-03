@@ -16,7 +16,7 @@ export function Hero() {
        <div className="absolute inset-0 z-0">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-          style={{ backgroundImage: "url(https://static.toiimg.com/photo/msid-102419977,width-96,height-65.cms?ixlib=rb-4.0.3&auto=format&fit=crop&w=2021&q=80')" }}
+          style={{ backgroundImage: "url(https://chatgpt.com/backend-api/estuary/content?id=file_0000000047ec71f4a2775eeb9302a2ff&ts=491699&p=fs&cid=1&sig=3ee2eb7219b8242b8f52f9bc8c9b3d1ff1d551da40478822baf489e5d24339c0&v=0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2021&q=80')" }}
         />
         <div className="absolute inset-0 bg-primary/10 mix-blend-overlay" />
         <div className="absolute inset-0 bg-[linear-gradient(45deg,#000000_1px,transparent_1px)] bg-[length:20px_20px] opacity-10"></div>
