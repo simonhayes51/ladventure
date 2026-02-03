@@ -25,7 +25,7 @@ const features = [
 
 export function WhatWeDo() {
   return (
-    <section id="what-we-do" className="py-20 md:py-32 bg-background border-b-4 border-foreground">
+    <section id="what-we-do" className="py-20 md:py-32 bg-muted/50 border-b-4 border-foreground">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-primary mb-4 retro-text-shadow">

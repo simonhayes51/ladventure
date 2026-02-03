@@ -20,7 +20,7 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-20 bg-background border-t-4 border-foreground relative overflow-hidden">
+    <section className="py-20 bg-secondary/10 border-t-4 border-foreground relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute -left-10 top-20 w-40 h-40 bg-secondary/20 rounded-full blur-xl"></div>
       <div className="absolute -right-10 bottom-20 w-40 h-40 bg-accent/20 rounded-full blur-xl"></div>

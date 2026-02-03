@@ -16,7 +16,7 @@
 }
 
 :root {
-  --background: #FFFEF9; /* Very warm off-white */
+  --background: #FFF4E6; /* Soft peach */
   --foreground: #1E1B4B; /* Indigo 950 */
   
   --primary: #5B21B6; /* Violet 800 */
@@ -25,7 +25,7 @@
   --secondary: #FACC15; /* Yellow 400 */
   --secondary-foreground: #1E1B4B;
   
-  --muted: #F3E8FF; /* Light Purple */
+  --muted: #DFF4FF; /* Light sky */
   --muted-foreground: #6B21A8; /* Purple 800 */
   
   --accent: #EC4899; /* Pink 500 */

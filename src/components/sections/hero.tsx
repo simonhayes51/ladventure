@@ -6,6 +6,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { BookingModal } from "@/components/booking-modal"
+import { trackEvent } from "@/lib/analytics"
 
 export function Hero() {
   const [isBookingOpen, setIsBookingOpen] = useState(false)
@@ -48,11 +49,18 @@ export function Hero() {
             <Button 
               size="lg" 
               className="w-full sm:w-auto text-lg px-10 h-16 border-2 border-foreground retro-shadow hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none bg-secondary text-secondary-foreground hover:bg-secondary"
-              onClick={() => setIsBookingOpen(true)}
+              onClick={() => {
+                trackEvent({ action: "cta_click", category: "hero", label: "start_planning" })
+                setIsBookingOpen(true)
+              }}
             >
               Start Planning Now
             </Button>
-            <Link href="#examples" className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto text-lg px-10 h-16 bg-white hover:bg-gray-50")}>
+            <Link
+              href="#examples"
+              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto text-lg px-10 h-16 bg-white hover:bg-gray-50")}
+              onClick={() => trackEvent({ action: "cta_click", category: "hero", label: "view_examples" })}
+            >
               View Example Trips
             </Link>
           </div>
