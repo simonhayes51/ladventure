@@ -10,7 +10,7 @@ import { BookingModal } from "@/components/booking-modal"
 const examples = [
   {
     title: "The Cotswolds Retreat",
-    image: "https://images.unsplash.com/photo-1518623001395-1252423c0d0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "https://www.walkersbritain.co.uk/croppedImages/Europe/England-_-UK/Cotswolds-Stills-Tim-Charody-59-7160267-350px.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     tags: ["Relaxed", "Foodie", "Scenic"],
     price: "From £300pp",
     description: "A charming weekend in honey-coloured villages with gastropub dinners and gentle country walks.",
