@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { GoogleAnalytics } from "@/components/analytics";
 import { FloatingChat } from "@/components/floating-chat";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ladventure.co.uk"),
@@ -78,6 +79,19 @@ export default function RootLayout({
         className="antialiased min-h-screen flex flex-col font-sans"
       >
         <GoogleAnalytics />
+        <Script id="tawkto" strategy="afterInteractive">
+          {`
+            var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+            (function() {
+              var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+              s1.async = true;
+              s1.src = "https://embed.tawk.to/698207943c76db1c37e38eab/1jghur77p";
+              s1.charset = "UTF-8";
+              s1.setAttribute("crossorigin", "*");
+              s0.parentNode.insertBefore(s1, s0);
+            })();
+          `}
+        </Script>
         <Navbar />
         <main className="flex-grow pt-16">{children}</main>
         <FloatingChat />
