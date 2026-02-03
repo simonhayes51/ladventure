@@ -5,6 +5,17 @@ import { Footer } from "@/components/layout/footer";
 import { GoogleAnalytics } from "@/components/analytics";
 import { FloatingChat } from "@/components/floating-chat";
 
+const righteous = Righteous({
+  variable: "--font-righteous",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://ladventure.co.uk"),
   title: {
