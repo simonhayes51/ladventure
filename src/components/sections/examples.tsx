@@ -90,12 +90,10 @@ export function Examples() {
               onClick={() => setSelectedTrip(trip)}
             >
               <div className="relative h-48 w-full overflow-hidden border-b-4 border-foreground">
-                <Image
+                <img
                   src={trip.image}
                   alt={trip.title}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-110 grayscale group-hover:grayscale-0"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110 grayscale group-hover:grayscale-0"
                 />
                 <div className="absolute top-4 right-4 z-10 bg-secondary border-2 border-foreground px-3 py-1 text-sm font-bold text-secondary-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                   {trip.price}

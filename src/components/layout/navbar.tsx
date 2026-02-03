@@ -9,6 +9,7 @@ import Image from "next/image"
 
 export function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false)
+  const [logoError, setLogoError] = React.useState(false)
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
@@ -25,14 +26,19 @@ export function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="relative w-40 h-12">
-               <Image 
-                 src="/logo.svg" 
-                 alt="Ladventure" 
-                 fill 
-                 className="object-contain"
-                 priority
-               />
+            <div className="relative h-12 flex items-center">
+               {!logoError ? (
+                 <img 
+                   src="/logo.png" 
+                   alt="Ladventure" 
+                   className="h-full w-auto object-contain"
+                   onError={() => setLogoError(true)}
+                 />
+               ) : (
+                 <span className="text-3xl font-display text-primary retro-text-shadow uppercase tracking-wider">
+                   Ladventure
+                 </span>
+               )}
             </div>
           </Link>
 
