@@ -19,8 +19,8 @@
   --background: #FFF4E6; /* Soft peach */
   --foreground: #1E1B4B; /* Indigo 950 */
 
-  --font-space-grotesk: "Space Grotesk", "Inter", "Segoe UI", system-ui, sans-serif;
-  --font-righteous: "Righteous", "Bebas Neue", "Impact", "Arial Black", sans-serif;
+  --font-space-grotesk: "Manrope", "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-righteous: "Montserrat", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
   
   --primary: #5B21B6; /* Violet 800 */
   --primary-foreground: #ffffff;
