@@ -69,7 +69,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
           <div className="border-4 border-foreground bg-white p-6 retro-shadow">
             <h2 className="text-2xl font-bold uppercase text-primary mb-4">Highlights</h2>
             <ul className="space-y-3 text-foreground font-medium">
-              {guide.highlights.map((item) => (
+              {guide.highlights.map((item: string) => (
                 <li key={item}>✔️ {item}</li>
               ))}
             </ul>
