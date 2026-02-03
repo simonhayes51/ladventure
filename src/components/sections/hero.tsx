@@ -73,7 +73,6 @@ export function Hero() {
 
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-8">
-
             <Button
               size="lg"
               className="w-full sm:w-auto text-lg px-10 h-16 border-2 border-foreground retro-shadow hover:translate-x-[4px] hover:translate-y-[4px] hover:shadow-none bg-secondary text-secondary-foreground hover:bg-secondary"
@@ -84,21 +83,19 @@ export function Hero() {
             >
               Start Planning Now
             </Button>
-            <Link
-              href="#examples"
-              className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto text-lg px-10 h-16 bg-white hover:bg-gray-50")}
-              onClick={() => trackEvent({ action: "cta_click", category: "hero", label: "view_examples" })}
-
+          
             <Link
               href="#examples"
               className={cn(
                 buttonVariants({ variant: "outline", size: "lg" }),
                 "w-full sm:w-auto text-lg px-10 h-16 bg-white hover:bg-gray-50"
               )}
+              onClick={() =>
+                trackEvent({ action: "cta_click", category: "hero", label: "view_examples" })
+              }
             >
               View Example Trips
             </Link>
-
           </div>
 
         </motion.div>
