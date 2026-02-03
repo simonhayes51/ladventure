@@ -23,6 +23,7 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (prefilledDestination) {
@@ -39,13 +40,29 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage(null);
     trackEvent({ action: "form_submit", category: "lead", label: "booking_form" });
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    trackEvent({ action: "form_success", category: "lead", label: "booking_form" });
-    // Reset after a delay or keep success state
+    try {
+      const response = await fetch("/api/booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ error: "Unable to send request." }));
+        throw new Error(error.error || "Unable to send request.");
+      }
+
+      setIsSuccess(true);
+      trackEvent({ action: "form_success", category: "lead", label: "booking_form" });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to send request.";
+      setErrorMessage(message);
+      trackEvent({ action: "form_error", category: "lead", label: "booking_form" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -167,6 +184,15 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
                   <Button type="submit" className="w-full" disabled={isSubmitting}>
                     {isSubmitting ? "Sending..." : "Request Quote"}
                   </Button>
+                  {errorMessage && (
+                    <p className="text-sm text-red-600 font-medium" role="alert">
+                      {errorMessage} You can also email{" "}
+                      <a className="underline" href="mailto:info@ladventure.co.uk">
+                        info@ladventure.co.uk
+                      </a>
+                      .
+                    </p>
+                  )}
                 </form>
               </>
             ) : (
