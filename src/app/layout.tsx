@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Righteous } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { GoogleAnalytics } from "@/components/analytics";
 
-const righteous = Righteous({
-  variable: "--font-righteous",
+const Space_Grotesk = Space_Grotesk({
+  variable: "--font-Space_Grotesk",
   subsets: ["latin"],
   weight: "400",
 });
@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${righteous.variable} antialiased min-h-screen flex flex-col font-sans`}
+        className={`${Space_Grotesk.variable} antialiased min-h-screen flex flex-col font-sans`}
       >
         <GoogleAnalytics />
         <Navbar />
