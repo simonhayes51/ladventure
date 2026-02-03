@@ -45,7 +45,10 @@ export function FloatingChat() {
   return (
     <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-3">
       {isOpen && (
-        <div className="w-72 bg-white border-2 border-foreground retro-shadow p-4">
+        <div
+          id="floating-chat-panel"
+          className="w-72 bg-white border-2 border-foreground retro-shadow p-4"
+        >
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm font-bold uppercase text-primary">Live chat (beta)</p>
             <button
@@ -69,15 +72,19 @@ export function FloatingChat() {
           </button>
         </div>
       )}
-      <button
-        type="button"
-        onClick={togglePanel}
-        className="flex items-center gap-2 bg-secondary text-secondary-foreground border-2 border-foreground retro-shadow px-4 py-3 font-bold uppercase"
-        aria-label="Open live chat"
-      >
-        <MessageCircle className="h-5 w-5" />
-        Chat
-      </button>
+      {!isOpen && (
+        <button
+          type="button"
+          onClick={togglePanel}
+          className="flex items-center gap-2 bg-secondary text-secondary-foreground border-2 border-foreground retro-shadow px-4 py-3 font-bold uppercase"
+          aria-label="Open live chat"
+          aria-expanded={isOpen}
+          aria-controls="floating-chat-panel"
+        >
+          <MessageCircle className="h-5 w-5" />
+          Chat
+        </button>
+      )}
     </div>
   )
 }
