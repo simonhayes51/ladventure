@@ -40,6 +40,23 @@ export function FloatingChat() {
 
   const togglePanel = () => {
     setIsOpen((prev) => !prev)
+import { MessageCircle } from "lucide-react"
+import { trackEvent } from "@/lib/analytics"
+
+export function FloatingChat() {
+  const [isOpening, setIsOpening] = useState(false)
+
+  const toggleChat = () => {
+    trackEvent({ action: "chat_toggle", category: "live_chat", label: "open" })
+    setIsOpening(true)
+    const api = (window as Window & { Tawk_API?: { toggle?: () => void; maximize?: () => void } })
+      .Tawk_API
+    if (api?.toggle) {
+      api.toggle()
+    } else if (api?.maximize) {
+      api.maximize()
+    }
+    setTimeout(() => setIsOpening(false), 800)
   }
 
   return (
@@ -72,11 +89,15 @@ export function FloatingChat() {
       <button
         type="button"
         onClick={togglePanel}
+      <button
+        type="button"
+        onClick={toggleChat}
         className="flex items-center gap-2 bg-secondary text-secondary-foreground border-2 border-foreground retro-shadow px-4 py-3 font-bold uppercase"
         aria-label="Open live chat"
       >
         <MessageCircle className="h-5 w-5" />
         Chat
+        {isOpening ? "Opening..." : "Chat"}
       </button>
     </div>
   )
