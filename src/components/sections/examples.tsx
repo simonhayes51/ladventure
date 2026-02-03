@@ -66,7 +66,7 @@ export function Examples() {
   }
 
   return (
-    <section id="examples" className="py-20 md:py-32 bg-muted/30 relative overflow-hidden">
+    <section id="examples" className="py-20 md:py-32 bg-accent/5 relative overflow-hidden">
       {/* Retro Grid Background */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03]" 
            style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}>

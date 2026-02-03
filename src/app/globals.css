@@ -16,8 +16,11 @@
 }
 
 :root {
-  --background: #FFFEF9; /* Very warm off-white */
+  --background: #FFF4E6; /* Soft peach */
   --foreground: #1E1B4B; /* Indigo 950 */
+
+  --font-space-grotesk: "Manrope", "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-righteous: "Montserrat", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
   
   --primary: #5B21B6; /* Violet 800 */
   --primary-foreground: #ffffff;
@@ -25,7 +28,7 @@
   --secondary: #FACC15; /* Yellow 400 */
   --secondary-foreground: #1E1B4B;
   
-  --muted: #F3E8FF; /* Light Purple */
+  --muted: #DFF4FF; /* Light sky */
   --muted-foreground: #6B21A8; /* Purple 800 */
   
   --accent: #EC4899; /* Pink 500 */
