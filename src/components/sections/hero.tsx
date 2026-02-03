@@ -16,7 +16,7 @@ export function Hero() {
        <div className="absolute inset-0 z-0">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=2021&q=80')" }}
+          style={{ backgroundImage: "url(https://static.toiimg.com/photo/msid-102419977,width-96,height-65.cms?ixlib=rb-4.0.3&auto=format&fit=crop&w=2021&q=80')" }}
         />
         <div className="absolute inset-0 bg-primary/10 mix-blend-overlay" />
         <div className="absolute inset-0 bg-[linear-gradient(45deg,#000000_1px,transparent_1px)] bg-[length:20px_20px] opacity-10"></div>
