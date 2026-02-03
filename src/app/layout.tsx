@@ -1,23 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Righteous, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { GoogleAnalytics } from "@/components/analytics";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const righteous = Righteous({
+  variable: "--font-righteous",
   subsets: ["latin"],
+  weight: "400",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Ladventure | Custom Weekend Trip Planning for UK Groups",
-  description: "We plan the perfect weekend trip for your group. No stress, no endless chats. Just turn up and enjoy.",
+  title: "Ladventure | Weekend trips, planned properly.",
+  description: "The easiest way to plan group trips. Hotels, activities, and transport sorted.",
 };
 
 export default function RootLayout({
@@ -28,13 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${righteous.variable} ${spaceGrotesk.variable} antialiased min-h-screen flex flex-col font-sans`}
       >
         <GoogleAnalytics />
         <Navbar />
-        <main className="flex-grow pt-16">
-            {children}
-        </main>
+        <main className="flex-grow pt-16">{children}</main>
         <Footer />
       </body>
     </html>

@@ -25,13 +25,13 @@ const features = [
 
 export function WhatWeDo() {
   return (
-    <section id="what-we-do" className="py-20 md:py-32 bg-white">
+    <section id="what-we-do" className="py-20 md:py-32 bg-background border-b-4 border-foreground">
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-primary mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-primary mb-4 retro-text-shadow">
             We plan, you adventure.
           </h2>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-muted-foreground font-medium">
             Organising a group trip is stressful. We take the hassle out of the process, delivering a professional, personalised plan for your weekend away.
           </p>
         </div>
@@ -40,11 +40,13 @@ export function WhatWeDo() {
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className="p-6 bg-slate-50 rounded-xl border border-slate-100 hover:shadow-md transition-shadow"
+              className="p-6 bg-white border-2 border-foreground retro-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all duration-200"
             >
-              <div className="mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-primary mb-2">{feature.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+              <div className="mb-4 inline-block p-3 bg-primary border-2 border-foreground text-white retro-shadow-sm">
+                <div className="text-secondary">{feature.icon}</div>
+              </div>
+              <h3 className="text-xl font-bold uppercase text-primary mb-2">{feature.title}</h3>
+              <p className="text-foreground font-medium leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>
