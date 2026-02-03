@@ -1,15 +1,16 @@
-<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+<svg width="240" height="60" viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Righteous&amp;display=swap');
-    </style>
     <filter id="shadow">
-      <feOffset dx="3" dy="3" />
-      <feGaussianBlur stdDeviation="0" />
-      <feColorMatrix type="matrix" values="0 0 0 0 0.07 0 0 0 0 0.05 0 0 0 0 0.25 0 0 0 1 0" />
+      <feOffset dx="4" dy="4" />
+      <feFlood flood-color="#1E1B4B" />
+      <feComposite in2="SourceAlpha" operator="in" />
+      <feMerge>
+        <feMergeNode />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
     </filter>
   </defs>
-  <text x="5" y="45" font-family="'Righteous', sans-serif" font-size="32" fill="#5B21B6" filter="url(#shadow)">LADVENTURE</text>
-  <text x="2" y="42" font-family="'Righteous', sans-serif" font-size="32" fill="#FACC15">LADVENTURE</text>
-  <path d="M10 50 L190 50" stroke="#EC4899" stroke-width="3" />
+  <rect x="0" y="0" width="240" height="60" fill="none" />
+  <text x="10" y="45" font-family="'Arial Black', 'Impact', sans-serif" font-weight="bold" font-size="36" fill="#FACC15" stroke="#5B21B6" stroke-width="2" filter="url(#shadow)">LADVENTURE</text>
+  <path d="M15 52 L225 52" stroke="#EC4899" stroke-width="4" />
 </svg>
