@@ -25,7 +25,7 @@ const examples = [
   },
   {
     title: "Peak District Adventure",
-    image: "https://images.unsplash.com/photo-1508898160914-22d73397980e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "https://files.holidaycottages.co.uk/docs/peakcottages/Family%20Canoe%20Trip.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     tags: ["Hiking", "Pubs", "Active"],
     price: "From £250pp",
     description: "Rugged landscapes, serious hiking routes, and rewarding pints by the fire in traditional inns.",
@@ -39,18 +39,18 @@ const examples = [
     }
   },
   {
-    title: "Brighton Coastal Escape",
-    image: "https://images.unsplash.com/photo-1594916894370-5b23d9a334c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    tags: ["Nightlife", "Beach", "Culture"],
+    title: "Prague Party Weekender",
+    image: "https://media.lastnightoffreedom.co.uk/i/Venues/750x400/1024-gallery1.jpg?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    tags: ["Nightlife", "European", "Culture"],
     price: "From £280pp",
-    description: "Seaside fun, vibrant lanes shopping, and electric nightlife for a high-energy group weekend.",
+    description: "European fun, cultural vibes, and electric nightlife for a high-energy group weekend.",
     fullDetails: {
       itinerary: [
-        { day: "Friday", desc: "Seafront hotel check-in. Cocktail masterclass. Club entry." },
-        { day: "Saturday", desc: "Beach yoga (or lie-in). Lanes shopping treasure hunt. Seafood dinner." },
-        { day: "Sunday", desc: "i360 Flight. Fish & Chips on the pier. Departure." }
+        { day: "Friday", desc: "Hummer airport transfer. Old town bar crawl. Club entry." },
+        { day: "Saturday", desc: "Sparta Prague game. Pedal beer boat. VIP Nightclub entry." },
+        { day: "Sunday", desc: "Brewery Tour. Local cuisine. Departure." }
       ],
-      included: ["2 nights hotel", "Cocktail Masterclass", "Club Entry", "Treasure Hunt"]
+      included: ["2 nights hotel", "Local football tickets", "Club entry", "Brewery tour"]
     }
   },
 ]
