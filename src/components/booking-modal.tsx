@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/lib/analytics";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -29,13 +30,21 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
     }
   }, [prefilledDestination]);
 
+  useEffect(() => {
+    if (isOpen) {
+      trackEvent({ action: "modal_open", category: "booking", label: "booking_modal" });
+    }
+  }, [isOpen]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    trackEvent({ action: "form_submit", category: "lead", label: "booking_form" });
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setIsSuccess(true);
+    trackEvent({ action: "form_success", category: "lead", label: "booking_form" });
     // Reset after a delay or keep success state
   };
 
@@ -68,11 +77,16 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
                 <h2 className="text-2xl md:text-3xl font-bold mb-2 text-primary">Secure Your Spot</h2>
                 <p className="text-muted-foreground mb-6">
                   Fill out the form below and we'll get back to you within 24 hours with a custom quote.
+                  Requests are sent to{" "}
+                  <a className="text-primary font-bold underline" href="mailto:info@ladventure.co.uk">
+                    info@ladventure.co.uk
+                  </a>
+                  .
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-bold uppercase">
+                    <label htmlFor="name" className="text-sm font-bold uppercase text-foreground">
                       Group Leader Name
                     </label>
                     <input
@@ -85,7 +99,7 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-bold uppercase">
+                    <label htmlFor="email" className="text-sm font-bold uppercase text-foreground">
                       Email Address
                     </label>
                     <input
@@ -100,7 +114,7 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label htmlFor="destination" className="text-sm font-bold uppercase">
+                      <label htmlFor="destination" className="text-sm font-bold uppercase text-foreground">
                         Destination
                       </label>
                       <select
@@ -119,7 +133,7 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
                     </div>
 
                     <div className="space-y-2">
-                      <label htmlFor="groupSize" className="text-sm font-bold uppercase">
+                      <label htmlFor="groupSize" className="text-sm font-bold uppercase text-foreground">
                         Group Size
                       </label>
                       <input
@@ -134,7 +148,7 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-bold uppercase">
+                    <label htmlFor="message" className="text-sm font-bold uppercase text-foreground">
                       Special Requests
                     </label>
                     <textarea
@@ -145,6 +159,10 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     />
                   </div>
+
+                  <p className="text-xs text-muted-foreground font-bold uppercase">
+                    We reply from info@ladventure.co.uk
+                  </p>
 
                   <Button type="submit" className="w-full" disabled={isSubmitting}>
                     {isSubmitting ? "Sending..." : "Request Quote"}
@@ -172,6 +190,13 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
                 <h3 className="text-2xl font-bold text-foreground mb-2">Request Received!</h3>
                 <p className="text-muted-foreground mb-6">
                   Sit tight! We'll be in touch shortly to plan the ultimate trip.
+                </p>
+                <p className="text-sm text-muted-foreground font-bold uppercase mb-6">
+                  You can also email{" "}
+                  <a className="text-primary underline" href="mailto:info@ladventure.co.uk">
+                    info@ladventure.co.uk
+                  </a>
+                  .
                 </p>
                 <Button onClick={onClose} variant="outline">
                   Close
