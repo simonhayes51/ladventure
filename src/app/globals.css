@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --font-sans: var(--font-space-grotesk);
+  --font-display: var(--font-righteous);
+}
+
+:root {
+  --background: #FFF4E6; /* Soft peach */
+  --foreground: #1E1B4B; /* Indigo 950 */
+
+  --font-space-grotesk: "Manrope", "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-righteous: "Montserrat", "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  
+  --primary: #5B21B6; /* Violet 800 */
+  --primary-foreground: #ffffff;
+  
+  --secondary: #FACC15; /* Yellow 400 */
+  --secondary-foreground: #1E1B4B;
+  
+  --muted: #DFF4FF; /* Light sky */
+  --muted-foreground: #6B21A8; /* Purple 800 */
+  
+  --accent: #EC4899; /* Pink 500 */
+  --accent-foreground: #ffffff;
+
+  --radius: 0px; /* Retro brutalism - no rounded corners */
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.retro-shadow {
+  box-shadow: 4px 4px 0px 0px var(--foreground);
+}
+
+.retro-shadow-sm {
+  box-shadow: 2px 2px 0px 0px var(--foreground);
+}
+
+.retro-shadow-accent {
+  box-shadow: 4px 4px 0px 0px var(--accent);
+}
+
+.retro-shadow-secondary {
+  box-shadow: 4px 4px 0px 0px var(--secondary);
+}
