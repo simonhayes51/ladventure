@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "sample itineraries",
   ],
 }
-
+console.log("[GUIDE PAGE HIT]", "slug:", params?.slug)
 export default async function GuidesPage() {
   const guides = await getGuides()
   return (
