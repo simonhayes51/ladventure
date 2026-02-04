@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getAllGuides, getGuideBySlug } from "@/lib/guides" // adjust based on what you actually have
+import { getGuides, getGuideBySlug } from "@/lib/guides"
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
@@ -10,6 +10,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ guide })
   }
 
-  const guides = await getAllGuides()
+  const guides = await getGuides()
   return NextResponse.json({ guides })
 }
