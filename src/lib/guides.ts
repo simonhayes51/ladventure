@@ -1,5 +1,6 @@
 import fs from "node:fs/promises"
 import path from "node:path"
+import seedGuides from "../../data/guides.json"
 
 export type Guide = {
   slug: string
@@ -22,7 +23,7 @@ export async function getGuides(): Promise<Guide[]> {
     const content = await fs.readFile(dataPath, "utf-8")
     return JSON.parse(content) as Guide[]
   } catch {
-    return []
+    return seedGuides as Guide[]
   }
 }
 
