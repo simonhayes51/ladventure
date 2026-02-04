@@ -118,7 +118,11 @@ export default function AdminPage() {
       return
     }
     const { url, publicUrl } = await sig.json()
-    const put = await fetch(url, { method: "PUT", headers: { "Content-Type": file.type }, body: file })
+    const put = await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": file.type, "x-amz-acl": "public-read" },
+      body: file,
+    })
     setUploadingHero(false)
     if (put.ok) {
       setForm((f) => ({ ...f, heroImage: publicUrl }))
@@ -140,7 +144,11 @@ export default function AdminPage() {
       return
     }
     const { url, publicUrl } = await sig.json()
-    const put = await fetch(url, { method: "PUT", headers: { "Content-Type": file.type }, body: file })
+    const put = await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": file.type, "x-amz-acl": "public-read" },
+      body: file,
+    })
     setUploadingGallery(false)
     if (put.ok) {
       setForm((f) => ({ ...f, gallery: [...(f.gallery || []), publicUrl] }))
