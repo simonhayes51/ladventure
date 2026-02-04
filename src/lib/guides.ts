@@ -2,6 +2,7 @@ import fs from "node:fs/promises"
 import path from "node:path"
 import seedGuides from "../../data/guides.json"
 import { unstable_noStore as noStore } from "next/cache"
+import { signS3Request } from "@/lib/aws-signature"
 
 export type Guide = {
   slug: string
@@ -22,27 +23,36 @@ const dataPath = path.join(process.cwd(), "data", "guides.json")
 async function readGuidesFromS3(): Promise<Guide[] | null> {
   const bucket = process.env.S3_BUCKET
   const region = process.env.S3_REGION
-  const key = process.env.GUIDES_S3_KEY
+  const accessKeyId = process.env.S3_ACCESS_KEY_ID
+  const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY
+  const key = process.env.GUIDES_S3_KEY || "content/guides.json"
 
-  if (!bucket || !region || !key) return null
+  if (!bucket || !region || !accessKeyId || !secretAccessKey) return null
 
   const host = `${bucket}.s3.${region}.amazonaws.com`
-  const url = `https://${host}/${key}`
+  const s3Path = `/${key.replace(/^\/+/, "")}`
 
-  const res = await fetch(url, { method: "GET", cache: "no-store" })
+  const { headers } = signS3Request({
+    method: "GET",
+    host,
+    path: s3Path,
+    region,
+    accessKeyId,
+    secretAccessKey,
+  })
 
-  // If the file doesn't exist yet, treat as empty list
-  if (res.status === 404) return []
+  const res = await fetch(`https://${host}${s3Path}`, { method: "GET", headers, cache: "no-store" })
 
+  if (res.status === 404) return [] // file not created yet
   if (!res.ok) {
-    console.log("[GUIDES] S3 public read failed", res.status)
+    console.log("[GUIDES] S3 signed read failed", res.status)
     return null
   }
 
   const text = await res.text()
   try {
     return JSON.parse(text) as Guide[]
-  } catch (e) {
+  } catch {
     console.log("[GUIDES] S3 JSON parse failed")
     return null
   }
@@ -51,11 +61,10 @@ async function readGuidesFromS3(): Promise<Guide[] | null> {
 export async function getGuides(): Promise<Guide[]> {
   noStore()
 
-  // 1) S3 (production source of truth)
   const fromS3 = await readGuidesFromS3()
   if (fromS3 !== null) return fromS3
 
-  // 2) Local file (dev fallback)
+  // fallback (dev/seed)
   try {
     const content = await fs.readFile(dataPath, "utf-8")
     return JSON.parse(content) as Guide[]
