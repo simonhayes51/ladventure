@@ -1,4 +1,4 @@
-import { S3Client, HeadBucketCommand } from "@aws-sdk/client-s3"
+import { signS3Request } from "@/lib/aws-signature"
 
 export async function GET(request: Request) {
   const bucket = process.env.S3_BUCKET || null
@@ -13,12 +13,20 @@ export async function GET(request: Request) {
 
   if (configured && bucket && region && accessKeyId && secretAccessKey) {
     try {
-      const client = new S3Client({
+      const host = `${bucket}.s3.${region}.amazonaws.com`
+      const { headers } = signS3Request({
+        method: "HEAD",
+        host,
+        path: "/",
         region,
-        credentials: { accessKeyId, secretAccessKey },
+        accessKeyId,
+        secretAccessKey,
       })
-      await client.send(new HeadBucketCommand({ Bucket: bucket }))
-      healthy = true
+      const response = await fetch(`https://${host}/`, { method: "HEAD", headers })
+      healthy = response.ok
+      if (!response.ok) {
+        error = `HTTP${response.status}`
+      }
     } catch (e: any) {
       healthy = false
       error = e?.name || "S3Error"
