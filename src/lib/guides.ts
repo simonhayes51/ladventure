@@ -47,12 +47,9 @@ const s3 =
 async function streamToString(stream: Readable): Promise<string> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = []
-
     stream.on("data", (chunk) => chunks.push(Buffer.from(chunk)))
     stream.on("error", reject)
-    stream.on("end", () =>
-      resolve(Buffer.concat(chunks).toString("utf-8"))
-    )
+    stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf-8")))
   })
 }
 
@@ -62,10 +59,11 @@ async function readGuidesFromS3(): Promise<Guide[] | null> {
   if (!s3) return null
 
   const bucket = process.env.S3_BUCKET
-  const key = process.env.GUIDES_S3_KEY
+  const keyRaw = process.env.GUIDES_S3_KEY || "content/guides.json"
+  const key = keyRaw.replace(/^\/+/, "") // safety: no leading slash
 
-  if (!bucket || !key) {
-    console.log("[GUIDES] Missing S3 env vars")
+  if (!bucket) {
+    console.log("[GUIDES] Missing S3_BUCKET")
     return null
   }
 
@@ -85,12 +83,21 @@ async function readGuidesFromS3(): Promise<Guide[] | null> {
     const text = await streamToString(res.Body as Readable)
 
     const parsed = JSON.parse(text) as Guide[]
-
-    console.log("[GUIDES] S3 read OK count:", parsed.length)
+    console.log("[GUIDES] S3 read OK count:", parsed.length, "key:", key)
 
     return parsed
   } catch (err: any) {
-    console.log("[GUIDES] S3 SDK read failed:", err?.name || err)
+    // Treat missing file as "no guides yet" so S3 remains source of truth
+    if (err?.name === "NoSuchKey" || err?.Code === "NoSuchKey") {
+      console.log("[GUIDES] S3 missing key (NoSuchKey) -> []", "key:", key)
+      return []
+    }
+    if (err?.name === "NoSuchBucket" || err?.Code === "NoSuchBucket") {
+      console.log("[GUIDES] S3 bucket not found", bucket)
+      return null
+    }
+
+    console.log("[GUIDES] S3 SDK read failed:", err?.name || err, "key:", key)
     return null
   }
 }
@@ -100,33 +107,25 @@ async function readGuidesFromS3(): Promise<Guide[] | null> {
 export async function getGuides(): Promise<Guide[]> {
   noStore()
 
-  // 1️⃣ Try S3 first (production source of truth)
+  // 1) Try S3 first (production source of truth)
   const fromS3 = await readGuidesFromS3()
-  if (fromS3) return fromS3
+  if (fromS3 !== null) return fromS3 // IMPORTANT: [] should be returned, not treated as falsy
 
-  // 2️⃣ Fallback: local file (dev / backup)
+  // 2) Fallback: local file (dev/backup)
   try {
     const content = await fs.readFile(dataPath, "utf-8")
     const parsed = JSON.parse(content) as Guide[]
-
     console.log("[GUIDES] Local read OK count:", parsed.length)
-
     return parsed
   } catch {
     console.log("[GUIDES] Using seed data")
-
     return seedGuides as Guide[]
   }
 }
 
-export async function getGuideBySlug(
-  slug: string
-): Promise<Guide | undefined> {
+export async function getGuideBySlug(slug: string): Promise<Guide | undefined> {
   const all = await getGuides()
-
   const found = all.find((g) => g.slug === slug)
-
   console.log("[GUIDES] LOOKUP slug:", slug, "found:", !!found)
-
   return found
 }
