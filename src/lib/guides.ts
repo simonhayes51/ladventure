@@ -1,6 +1,7 @@
 import fs from "node:fs/promises"
 import path from "node:path"
 import seedGuides from "../../data/guides.json"
+import { unstable_noStore as noStore } from "next/cache"
 
 export type Guide = {
   slug: string
@@ -19,6 +20,7 @@ export type Guide = {
 const dataPath = path.join(process.cwd(), "data", "guides.json")
 
 export async function getGuides(): Promise<Guide[]> {
+  noStore()
   try {
     const content = await fs.readFile(dataPath, "utf-8")
     return JSON.parse(content) as Guide[]
