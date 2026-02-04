@@ -2,7 +2,11 @@ import fs from "node:fs/promises"
 import path from "node:path"
 import seedGuides from "../../data/guides.json"
 import { unstable_noStore as noStore } from "next/cache"
-import { signS3Request } from "@/lib/aws-signature"
+
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3"
+import { Readable } from "stream"
+
+/* ---------------- Types ---------------- */
 
 export type Guide = {
   slug: string
@@ -18,62 +22,111 @@ export type Guide = {
   gallery?: string[]
 }
 
+/* ---------------- Paths ---------------- */
+
 const dataPath = path.join(process.cwd(), "data", "guides.json")
 
-async function readGuidesFromS3(): Promise<Guide[] | null> {
-  const bucket = process.env.S3_BUCKET
-  const region = process.env.S3_REGION
-  const accessKeyId = process.env.S3_ACCESS_KEY_ID
-  const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY
-  const key = process.env.GUIDES_S3_KEY || "content/guides.json"
+/* ---------------- S3 Client ---------------- */
 
-  if (!bucket || !region || !accessKeyId || !secretAccessKey) return null
+const s3 =
+  process.env.S3_BUCKET &&
+  process.env.S3_REGION &&
+  process.env.S3_ACCESS_KEY_ID &&
+  process.env.S3_SECRET_ACCESS_KEY
+    ? new S3Client({
+        region: process.env.S3_REGION,
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID,
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+        },
+      })
+    : null
 
-  const host = `${bucket}.s3.${region}.amazonaws.com`
-  const s3Path = `/${key.replace(/^\/+/, "")}`
+/* ---------------- Helpers ---------------- */
 
-  const { headers } = signS3Request({
-    method: "GET",
-    host,
-    path: s3Path,
-    region,
-    accessKeyId,
-    secretAccessKey,
+async function streamToString(stream: Readable): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = []
+
+    stream.on("data", (chunk) => chunks.push(Buffer.from(chunk)))
+    stream.on("error", reject)
+    stream.on("end", () =>
+      resolve(Buffer.concat(chunks).toString("utf-8"))
+    )
   })
+}
 
-  const res = await fetch(`https://${host}${s3Path}`, { method: "GET", headers, cache: "no-store" })
+/* ---------------- S3 Read ---------------- */
 
-  if (res.status === 404) return [] // file not created yet
-  if (!res.ok) {
-    console.log("[GUIDES] S3 signed read failed", res.status)
+async function readGuidesFromS3(): Promise<Guide[] | null> {
+  if (!s3) return null
+
+  const bucket = process.env.S3_BUCKET
+  const key = process.env.GUIDES_S3_KEY
+
+  if (!bucket || !key) {
+    console.log("[GUIDES] Missing S3 env vars")
     return null
   }
 
-  const text = await res.text()
   try {
-    return JSON.parse(text) as Guide[]
-  } catch {
-    console.log("[GUIDES] S3 JSON parse failed")
+    const res = await s3.send(
+      new GetObjectCommand({
+        Bucket: bucket,
+        Key: key,
+      })
+    )
+
+    if (!res.Body) {
+      console.log("[GUIDES] S3 file empty")
+      return []
+    }
+
+    const text = await streamToString(res.Body as Readable)
+
+    const parsed = JSON.parse(text) as Guide[]
+
+    console.log("[GUIDES] S3 read OK count:", parsed.length)
+
+    return parsed
+  } catch (err: any) {
+    console.log("[GUIDES] S3 SDK read failed:", err?.name || err)
     return null
   }
 }
+
+/* ---------------- Public API ---------------- */
 
 export async function getGuides(): Promise<Guide[]> {
   noStore()
 
+  // 1️⃣ Try S3 first (production source of truth)
   const fromS3 = await readGuidesFromS3()
-  if (fromS3 !== null) return fromS3
+  if (fromS3) return fromS3
 
-  // fallback (dev/seed)
+  // 2️⃣ Fallback: local file (dev / backup)
   try {
     const content = await fs.readFile(dataPath, "utf-8")
-    return JSON.parse(content) as Guide[]
+    const parsed = JSON.parse(content) as Guide[]
+
+    console.log("[GUIDES] Local read OK count:", parsed.length)
+
+    return parsed
   } catch {
+    console.log("[GUIDES] Using seed data")
+
     return seedGuides as Guide[]
   }
 }
 
-export async function getGuideBySlug(slug: string): Promise<Guide | undefined> {
+export async function getGuideBySlug(
+  slug: string
+): Promise<Guide | undefined> {
   const all = await getGuides()
-  return all.find((g) => g.slug === slug)
+
+  const found = all.find((g) => g.slug === slug)
+
+  console.log("[GUIDES] LOOKUP slug:", slug, "found:", !!found)
+
+  return found
 }
