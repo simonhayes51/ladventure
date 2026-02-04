@@ -5,6 +5,9 @@ import { GuidesFilterGrid } from "@/components/guides/filter-grid"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
 export const metadata: Metadata = {
   title: "Guides",
   description: "Location guides and group travel planning articles built for UK weekend trips.",
