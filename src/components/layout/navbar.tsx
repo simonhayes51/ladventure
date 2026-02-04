@@ -14,10 +14,10 @@ export function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen)
 
   const navLinks = [
-    { href: "#what-we-do", label: "What We Do" },
-    { href: "#how-it-works", label: "How It Works" },
-    { href: "#examples", label: "Examples" },
-    { href: "#pricing", label: "Pricing" },
+    { href: "/#what-we-do", label: "What We Do" },
+    { href: "/#how-it-works", label: "How It Works" },
+    { href: "/#examples", label: "Examples" },
+    { href: "/#pricing", label: "Pricing" },
     { href: "/guides", label: "Guides" },
   ]
 
@@ -54,7 +54,7 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Link href="#pricing" className={cn(buttonVariants({ size: "sm" }))}>
+            <Link href="/#pricing" className={cn(buttonVariants({ size: "sm" }))}>
               Get Started
             </Link>
           </div>
@@ -85,7 +85,7 @@ export function Navbar() {
               </Link>
             ))}
             <div className="pt-4">
-              <Link href="#pricing" className={cn(buttonVariants({ className: "w-full" }))} onClick={() => setIsOpen(false)}>
+              <Link href="/#pricing" className={cn(buttonVariants({ className: "w-full" }))} onClick={() => setIsOpen(false)}>
                 Get Started
               </Link>
             </div>

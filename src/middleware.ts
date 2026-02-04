@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin/guides") || pathname.startsWith("/api/admin/upload") || pathname.startsWith("/api/admin/upload-signed") || pathname.startsWith("/api/admin/s3-config")) {
+  if ((pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) || pathname.startsWith("/api/admin/guides") || pathname.startsWith("/api/admin/upload") || pathname.startsWith("/api/admin/upload-signed") || pathname.startsWith("/api/admin/s3-config")) {
     const hasCookie = request.cookies.get("admin")?.value === "1"
     if (!hasCookie) {
       if (pathname.startsWith("/api")) {

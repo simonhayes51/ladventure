@@ -4,19 +4,28 @@ import { getGuideBySlug } from "@/lib/guides"
 import Image from "next/image"
 import Script from "next/script"
 
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
+type MaybePromise<T> = T | Promise<T>
+
 type GuidePageProps = {
-  params: { slug: string }
+  params?: MaybePromise<{ slug?: string }>
+}
+
+async function getSlug(params?: MaybePromise<{ slug?: string }>) {
+  if (!params) return undefined
+  // If Next gives us a Promise-like params, await it.
+  const resolved = typeof (params as any)?.then === "function" ? await (params as Promise<any>) : (params as any)
+  return resolved?.slug as string | undefined
 }
 
 export async function generateMetadata({ params }: GuidePageProps): Promise<Metadata> {
-  const { slug } = params
-  const guide = await getGuideBySlug(slug)
+  const slug = await getSlug(params)
+  if (!slug) return { title: "Guide | Ladventure" }
 
-  if (!guide) {
-    return {
-      title: "Guide",
-    }
-  }
+  const guide = await getGuideBySlug(slug)
+  if (!guide) return { title: "Guide | Ladventure" }
 
   const baseUrl = "https://ladventure.co.uk"
   const url = `${baseUrl}/guides/${guide.slug}`
@@ -24,13 +33,7 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
   return {
     title: guide.title,
     description: guide.excerpt,
-    keywords: [
-      guide.location,
-      "group travel",
-      "weekend trip",
-      "itinerary",
-      "UK groups",
-    ],
+    keywords: [guide.location, "group travel", "weekend trip", "itinerary", "UK groups"],
     alternates: {
       canonical: `/guides/${guide.slug}`,
       languages: {
@@ -64,12 +67,14 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
 }
 
 export default async function GuidePage({ params }: GuidePageProps) {
-  const { slug } = params
-  const guide = await getGuideBySlug(slug)
+  const slug = await getSlug(params)
 
-  if (!guide) {
-    notFound()
-  }
+  console.log("[SLUG PAGE HIT]", "slug:", slug)
+
+  if (!slug) notFound()
+
+  const guide = await getGuideBySlug(slug)
+  if (!guide) notFound()
 
   return (
     <div className="bg-background">
@@ -78,27 +83,13 @@ export default async function GuidePage({ params }: GuidePageProps) {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: "Home",
-              item: "https://ladventure.co.uk/",
-            },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: "Guides",
-              item: "https://ladventure.co.uk/guides",
-            },
-            {
-              "@type": "ListItem",
-              position: 3,
-              name: guide.title,
-              item: `https://ladventure.co.uk/guides/${guide.slug}`,
-            },
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://ladventure.co.uk/" },
+            { "@type": "ListItem", position: 2, name: "Guides", item: "https://ladventure.co.uk/guides" },
+            { "@type": "ListItem", position: 3, name: guide.title, item: `https://ladventure.co.uk/guides/${guide.slug}` },
           ],
         })}
       </Script>
+
       <Script id="article-jsonld" strategy="afterInteractive" type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
@@ -106,25 +97,16 @@ export default async function GuidePage({ params }: GuidePageProps) {
           headline: guide.title,
           description: guide.excerpt,
           image: [guide.heroImage],
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id": `https://ladventure.co.uk/guides/${guide.slug}`,
-          },
-          author: {
-            "@type": "Organization",
-            name: "Ladventure",
-            url: "https://ladventure.co.uk",
-          },
+          mainEntityOfPage: { "@type": "WebPage", "@id": `https://ladventure.co.uk/guides/${guide.slug}` },
+          author: { "@type": "Organization", name: "Ladventure", url: "https://ladventure.co.uk" },
           publisher: {
             "@type": "Organization",
             name: "Ladventure",
-            logo: {
-              "@type": "ImageObject",
-              url: guide.heroImage,
-            },
+            logo: { "@type": "ImageObject", url: guide.heroImage },
           },
         })}
       </Script>
+
       <section className="py-20 md:py-28 border-b-4 border-foreground">
         <div className="container mx-auto px-4 md:px-6">
           <p className="text-xs font-bold uppercase text-muted-foreground">{guide.location}</p>
@@ -148,15 +130,19 @@ export default async function GuidePage({ params }: GuidePageProps) {
                 priority
               />
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="border-2 border-foreground bg-white p-5 retro-shadow-sm">
                 <h2 className="text-xl font-bold uppercase text-primary mb-2">Trip snapshot</h2>
                 <p className="text-foreground font-medium">{guide.excerpt}</p>
               </div>
+
               <div className="border-2 border-foreground bg-white p-5 retro-shadow-sm">
                 <h2 className="text-xl font-bold uppercase text-primary mb-2">Best for</h2>
                 <p className="text-foreground font-medium">
-                  Groups who want clarity, fast planning, and a schedule that keeps everyone together.
+                  {guide.bestFor && guide.bestFor.trim().length > 0
+                    ? guide.bestFor
+                    : "Groups who want clarity, fast planning, and a schedule that keeps everyone together."}
                 </p>
               </div>
             </div>
@@ -169,6 +155,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
                 <li key={item}>✔️ {item}</li>
               ))}
             </ul>
+
             <div className="mt-6 border-t-2 border-dashed border-foreground pt-4">
               <p className="text-sm font-bold uppercase text-muted-foreground">Need this tailored?</p>
               <p className="text-foreground font-medium">
@@ -184,6 +171,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
           <h2 className="text-3xl md:text-4xl font-bold uppercase text-primary mb-8 retro-text-shadow">
             Sample itinerary
           </h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {guide.itinerary.map((item) => (
               <div key={item.title} className="bg-white border-2 border-foreground p-6 retro-shadow-sm">
@@ -207,6 +195,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
               ))}
             </div>
           </div>
+
           <div className="border-2 border-foreground bg-white p-6 retro-shadow-sm">
             <h2 className="text-2xl font-bold uppercase text-primary mb-4">FAQs</h2>
             <div className="space-y-4">

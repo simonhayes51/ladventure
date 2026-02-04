@@ -1,5 +1,4 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
+import { createPresignedS3Url } from "@/lib/aws-signature"
 
 function isAdmin(request: Request) {
   const cookie = request.headers.get("cookie") || ""
@@ -23,17 +22,21 @@ export async function POST(request: Request) {
   const safeName = String(filename || "upload").replace(/[^a-zA-Z0-9._-]/g, "_")
   const key = `uploads/${Date.now()}-${Math.random().toString(36).slice(2)}-${safeName}`
 
-  const client = new S3Client({
+  const host = `${bucket}.s3.${region}.amazonaws.com`
+  const contentTypeValue = contentType || "application/octet-stream"
+  const url = createPresignedS3Url({
+    method: "PUT",
+    host,
+    path: `/${key}`,
     region,
-    credentials: { accessKeyId, secretAccessKey },
+    accessKeyId,
+    secretAccessKey,
+    headers: {
+      host,
+      "content-type": contentTypeValue,
+    },
+    expires: 3600,
   })
-  const command = new PutObjectCommand({
-    Bucket: bucket,
-    Key: key,
-    ContentType: contentType || "application/octet-stream",
-    ACL: "public-read",
-  })
-  const url = await getSignedUrl(client, command, { expiresIn: 3600 })
-  const publicUrl = `https://${bucket}.s3.${region}.amazonaws.com/${key}`
+  const publicUrl = `https://${host}/${key}`
   return new Response(JSON.stringify({ url, publicUrl }), { status: 200 })
 }

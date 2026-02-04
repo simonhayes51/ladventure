@@ -84,7 +84,7 @@ export function Hero() {
               Start Planning Now
             </Button>
             <Link
-              href="#examples"
+              href="/#examples"
               className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto text-lg px-10 h-16 bg-white hover:bg-gray-50")}
               onClick={() => trackEvent({ action: "cta_click", category: "hero", label: "view_examples" })}
             >
