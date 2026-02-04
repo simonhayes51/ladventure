@@ -1,14 +1,29 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { guides } from "@/lib/guides"
+import { getGuides } from "@/lib/guides"
+import Image from "next/image"
 
 export const metadata: Metadata = {
   title: "Guides",
   description:
     "Location guides and group travel planning articles built for UK weekend trips.",
+  alternates: {
+    canonical: "/guides",
+    languages: {
+      "en-GB": "/guides",
+      en: "/guides",
+    },
+  },
+  keywords: [
+    "travel guides",
+    "group trip planning",
+    "UK weekend destinations",
+    "sample itineraries",
+  ],
 }
 
-export default function GuidesPage() {
+export default async function GuidesPage() {
+  const guides = await getGuides()
   return (
     <div className="bg-background">
       <section className="py-20 md:py-28 border-b-4 border-foreground">
@@ -31,6 +46,15 @@ export default function GuidesPage() {
               href={`/guides/${guide.slug}`}
               className="bg-white border-2 border-foreground p-6 retro-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all duration-200"
             >
+              <div className="aspect-[16/9] border-2 border-foreground overflow-hidden mb-3">
+                <Image
+                  src={(guide.gallery && guide.gallery[0]) || guide.heroImage}
+                  alt={guide.heroAlt}
+                  width={800}
+                  height={450}
+                  className="h-full w-full object-cover"
+                />
+              </div>
               <p className="text-xs font-bold uppercase text-muted-foreground">{guide.location}</p>
               <h2 className="text-2xl font-bold text-primary uppercase mt-2">{guide.title}</h2>
               <p className="text-foreground font-medium mt-3">{guide.excerpt}</p>

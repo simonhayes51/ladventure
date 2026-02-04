@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -10,6 +9,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      ...(process.env.NEXT_PUBLIC_S3_HOST ? [{
+        protocol: 'https',
+        hostname: process.env.NEXT_PUBLIC_S3_HOST,
+        port: '',
+        pathname: '/**',
+      }] : []),
     ],
   },
 };

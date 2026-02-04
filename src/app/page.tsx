@@ -16,6 +16,14 @@ export const metadata: Metadata = {
   title: "Group travel planning for UK weekends",
   description:
     "Personalised group weekend itineraries with zero commission bias. Built for UK groups who want a clean, modern plan fast.",
+  keywords: [
+    "group travel planning",
+    "UK weekend trips",
+    "stag do planning",
+    "lads weekend itinerary",
+    "custom trip planner",
+    "Newcastle travel planner",
+  ],
 };
 
 export default function Home() {

@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next"
-import { guides } from "@/lib/guides"
+import { getGuides } from "@/lib/guides"
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://ladventure.co.uk"
+  const guides = await getGuides()
 
   return [
     {

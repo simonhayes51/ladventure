@@ -37,7 +37,7 @@ export function FloatingChat() {
         window.setTimeout(tryOpen, 300)
         return
       }
-      window.open("https://tawk.to/chat/698207943c76db1c37e38eab/1jghur77p", "_blank")
+      window.open("https://tawk.to/chat/698207943c76db1c37e38eab/1jghur77p", "_blank", "noopener,noreferrer")
       setIsOpening(false)
     }
 

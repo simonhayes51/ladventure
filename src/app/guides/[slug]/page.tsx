@@ -1,18 +1,16 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { guides } from "@/lib/guides"
+import { getGuideBySlug } from "@/lib/guides"
+import Image from "next/image"
+import Script from "next/script"
 
 type GuidePageProps = {
-  params: Promise<{ slug: string }>
-}
-
-export function generateStaticParams() {
-  return guides.map((guide) => ({ slug: guide.slug }))
+  params: { slug: string }
 }
 
 export async function generateMetadata({ params }: GuidePageProps): Promise<Metadata> {
-  const { slug } = await params
-  const guide = guides.find((item) => item.slug === slug)
+  const { slug } = params
+  const guide = await getGuideBySlug(slug)
 
   if (!guide) {
     return {
@@ -20,15 +18,54 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
     }
   }
 
+  const baseUrl = "https://ladventure.co.uk"
+  const url = `${baseUrl}/guides/${guide.slug}`
+
   return {
     title: guide.title,
     description: guide.excerpt,
+    keywords: [
+      guide.location,
+      "group travel",
+      "weekend trip",
+      "itinerary",
+      "UK groups",
+    ],
+    alternates: {
+      canonical: `/guides/${guide.slug}`,
+      languages: {
+        "en-GB": `/guides/${guide.slug}`,
+        en: `/guides/${guide.slug}`,
+      },
+    },
+    openGraph: {
+      title: guide.title,
+      description: guide.excerpt,
+      url,
+      siteName: "Ladventure",
+      type: "article",
+      locale: "en_GB",
+      images: [
+        {
+          url: guide.heroImage,
+          width: 1400,
+          height: 788,
+          alt: guide.heroAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: guide.title,
+      description: guide.excerpt,
+      images: [guide.heroImage],
+    },
   }
 }
 
 export default async function GuidePage({ params }: GuidePageProps) {
-  const { slug } = await params
-  const guide = guides.find((item) => item.slug === slug)
+  const { slug } = params
+  const guide = await getGuideBySlug(slug)
 
   if (!guide) {
     notFound()
@@ -36,6 +73,58 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
   return (
     <div className="bg-background">
+      <Script id="breadcrumbs-jsonld" strategy="afterInteractive" type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://ladventure.co.uk/",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Guides",
+              item: "https://ladventure.co.uk/guides",
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: guide.title,
+              item: `https://ladventure.co.uk/guides/${guide.slug}`,
+            },
+          ],
+        })}
+      </Script>
+      <Script id="article-jsonld" strategy="afterInteractive" type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: guide.title,
+          description: guide.excerpt,
+          image: [guide.heroImage],
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://ladventure.co.uk/guides/${guide.slug}`,
+          },
+          author: {
+            "@type": "Organization",
+            name: "Ladventure",
+            url: "https://ladventure.co.uk",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Ladventure",
+            logo: {
+              "@type": "ImageObject",
+              url: guide.heroImage,
+            },
+          },
+        })}
+      </Script>
       <section className="py-20 md:py-28 border-b-4 border-foreground">
         <div className="container mx-auto px-4 md:px-6">
           <p className="text-xs font-bold uppercase text-muted-foreground">{guide.location}</p>
@@ -50,7 +139,14 @@ export default async function GuidePage({ params }: GuidePageProps) {
         <div className="container mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-10 items-start">
           <div className="space-y-6">
             <div className="aspect-[16/9] border-4 border-foreground overflow-hidden retro-shadow-sm bg-muted/40">
-              <img src={guide.heroImage} alt={guide.heroAlt} className="h-full w-full object-cover" />
+              <Image
+                src={guide.heroImage}
+                alt={guide.heroAlt}
+                width={1400}
+                height={788}
+                className="h-full w-full object-cover"
+                priority
+              />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="border-2 border-foreground bg-white p-5 retro-shadow-sm">
@@ -104,18 +200,11 @@ export default async function GuidePage({ params }: GuidePageProps) {
           <div className="border-2 border-foreground bg-white p-6 retro-shadow-sm">
             <h2 className="text-2xl font-bold uppercase text-primary mb-4">Photo spaces</h2>
             <div className="grid grid-cols-2 gap-4">
-              <div className="aspect-[4/3] bg-muted/40 border-2 border-foreground flex items-center justify-center text-sm font-bold uppercase text-muted-foreground">
-                Photo placeholder
-              </div>
-              <div className="aspect-[4/3] bg-muted/40 border-2 border-foreground flex items-center justify-center text-sm font-bold uppercase text-muted-foreground">
-                Photo placeholder
-              </div>
-              <div className="aspect-[4/3] bg-muted/40 border-2 border-foreground flex items-center justify-center text-sm font-bold uppercase text-muted-foreground">
-                Photo placeholder
-              </div>
-              <div className="aspect-[4/3] bg-muted/40 border-2 border-foreground flex items-center justify-center text-sm font-bold uppercase text-muted-foreground">
-                Photo placeholder
-              </div>
+              {(guide.gallery ?? [guide.heroImage]).slice(0, 4).map((src) => (
+                <div key={src} className="aspect-[4/3] bg-muted/40 border-2 border-foreground overflow-hidden">
+                  <Image src={src} alt={guide.heroAlt} width={800} height={600} className="h-full w-full object-cover" />
+                </div>
+              ))}
             </div>
           </div>
           <div className="border-2 border-foreground bg-white p-6 retro-shadow-sm">

@@ -1,11 +1,15 @@
 import type { MetadataRoute } from "next"
 
 export default function robots(): MetadataRoute.Robots {
+  const baseUrl = "https://ladventure.co.uk"
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-    },
-    sitemap: "https://ladventure.co.uk/sitemap.xml",
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+      },
+    ],
+    sitemap: [`${baseUrl}/sitemap.xml`],
+    host: baseUrl,
   }
 }

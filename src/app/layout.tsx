@@ -14,6 +14,13 @@ export const metadata: Metadata = {
   },
   description:
     "Bespoke group weekend planning built around your budget, dates, and vibe. One flat fee. Zero commissions. Newcastle-based.",
+  alternates: {
+    canonical: "/",
+    languages: {
+      "en-GB": "/",
+      en: "/",
+    },
+  },
   openGraph: {
     title: "Ladventure | Tailored group trips, planned properly",
     description:
@@ -22,12 +29,27 @@ export const metadata: Metadata = {
     siteName: "Ladventure",
     locale: "en_GB",
     type: "website",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?auto=format&fit=crop&w=1400&q=80",
+        width: 1400,
+        height: 788,
+        alt: "Group weekend travel inspiration",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Ladventure | Tailored group trips, planned properly",
     description:
       "Bespoke group weekend planning built around your budget, dates, and vibe. One flat fee. Zero commissions. Newcastle-based.",
+    images: [
+      "https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?auto=format&fit=crop&w=1400&q=80",
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -70,6 +92,13 @@ export default function RootLayout({
                   priceCurrency: "GBP",
                   price: "50",
                 },
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                name: "Ladventure",
+                url: "https://ladventure.co.uk",
+                inLanguage: "en-GB",
               },
             ]),
           }}

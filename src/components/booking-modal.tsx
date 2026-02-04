@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,7 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const firstInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (prefilledDestination) {
@@ -34,8 +35,19 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
   useEffect(() => {
     if (isOpen) {
       trackEvent({ action: "modal_open", category: "booking", label: "booking_modal" });
+      window.setTimeout(() => firstInputRef.current?.focus(), 0);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,17 +93,22 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
             className="relative w-full max-w-lg bg-background border-4 border-foreground p-6 retro-shadow shadow-xl max-h-[90vh] overflow-y-auto"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="booking-modal-title"
           >
             <button
               onClick={onClose}
               className="absolute right-4 top-4 p-1 hover:bg-accent hover:text-accent-foreground border-2 border-transparent hover:border-foreground transition-colors"
+              aria-label="Close booking modal"
+              type="button"
             >
               <X className="w-6 h-6" />
             </button>
 
             {!isSuccess ? (
               <>
-                <h2 className="text-2xl md:text-3xl font-bold mb-2 text-primary">Secure Your Spot</h2>
+                <h2 id="booking-modal-title" className="text-2xl md:text-3xl font-bold mb-2 text-primary">Secure Your Spot</h2>
                 <p className="text-muted-foreground mb-6">
                   Fill out the form below and we'll get back to you within 24 hours with a custom quote.
                   Requests are sent to{" "}
@@ -112,6 +129,7 @@ export function BookingModal({ isOpen, onClose, prefilledDestination }: BookingM
                       className="w-full bg-white border-2 border-foreground p-3 focus:outline-none focus:ring-2 focus:ring-accent"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      ref={firstInputRef}
                     />
                   </div>
 
