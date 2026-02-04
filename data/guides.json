@@ -6,6 +6,8 @@
     "location": "Prague",
     "heroImage": "https://images.unsplash.com/photo-1541849548-216549ae216d?auto=format&fit=crop&w=1400&q=80",
     "heroAlt": "Prague skyline at sunset",
+    "bestFor": "Groups who want nightlife, value, and simple logistics across the weekend.",
+    "tags": ["nightlife", "budget", "city-break"],
     "summary": "A high-energy weekend with iconic bars, smart logistics, and a schedule that keeps the group together.",
     "highlights": [
       "Central stay near Old Town Square",
@@ -50,6 +52,8 @@
     "location": "Peak District",
     "heroImage": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80",
     "heroAlt": "Peak District hills and valleys",
+    "bestFor": "Groups who want countryside, walking routes, and proper pub stops.",
+    "tags": ["hiking", "countryside", "pubs"],
     "summary": "A classic UK lads weekend combining scenic hikes, countryside pubs, and simple transport so everyone stays on schedule.",
     "highlights": [
       "Circular walking route with 2–3 pub stops",
@@ -94,6 +98,8 @@
     "location": "Lisbon",
     "heroImage": "https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?auto=format&fit=crop&w=1400&q=80",
     "heroAlt": "Lisbon rooftops and yellow tram",
+    "bestFor": "Groups who want sun, rooftops, and a balanced nightlife plan.",
+    "tags": ["sun", "nightlife", "rooftops", "beach"],
     "summary": "A sun-soaked long weekend mixing rooftop bars, waterfront spots, and nightlife with a relaxed daytime pace.",
     "highlights": [
       "Central stay in Bairro Alto or Chiado",
@@ -142,6 +148,8 @@
     "location": "Barcelona",
     "heroImage": "https://images.unsplash.com/photo-1517959105821-eaf5096dc4f0?auto=format&fit=crop&w=1400&q=80",
     "heroAlt": "Barcelona skyline and beach",
+    "bestFor": "Groups who want beach time, tapas, and late-night bar routes.",
+    "tags": ["beach", "tapas", "nightlife", "city-break"],
     "summary": "A sun-and-city blend with beach time, tapas, and curated bar routes that keep the group together.",
     "highlights": [
       "Central stay near Barceloneta or El Born",
@@ -171,6 +179,8 @@
     "location": "Edinburgh",
     "heroImage": "https://images.unsplash.com/photo-1546272708-7dfc9fd6cef2?auto=format&fit=crop&w=1400&q=80",
     "heroAlt": "Edinburgh Old Town and castle",
+    "bestFor": "Groups who want classic city pubs, walks, and compact logistics.",
+    "tags": ["city-break", "pubs", "walks"],
     "summary": "A compact city weekend with walks, pub stops, and simple logistics that keep everyone together.",
     "highlights": [
       "Central stay near the Royal Mile",

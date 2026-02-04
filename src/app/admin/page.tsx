@@ -10,6 +10,8 @@ type Guide = {
   location: string
   heroImage: string
   heroAlt: string
+  bestFor?: string
+  tags?: string[]
   highlights?: string[]
   itinerary?: { title: string; detail: string }[]
   faq?: { question: string; answer: string }[]
@@ -33,6 +35,8 @@ export default function AdminPage() {
     location: "",
     heroImage: "",
     heroAlt: "",
+    bestFor: "",
+    tags: [],
     highlights: [],
     itinerary: [],
     faq: [],
@@ -73,7 +77,7 @@ export default function AdminPage() {
       body: JSON.stringify(form),
     })
     if (res.ok) {
-      setForm({ slug: "", title: "", excerpt: "", location: "", heroImage: "", heroAlt: "", highlights: [], itinerary: [], faq: [], gallery: [] })
+      setForm({ slug: "", title: "", excerpt: "", location: "", heroImage: "", heroAlt: "", bestFor: "", tags: [], highlights: [], itinerary: [], faq: [], gallery: [] })
       setMessage("Guide saved")
       loadGuides()
       return
@@ -98,6 +102,8 @@ export default function AdminPage() {
       location: g.location,
       heroImage: g.heroImage,
       heroAlt: g.heroAlt,
+      bestFor: g.bestFor || "",
+      tags: g.tags || [],
       highlights: g.highlights || [],
       itinerary: g.itinerary || [],
       faq: g.faq || [],
@@ -216,6 +222,10 @@ export default function AdminPage() {
               </div>
             </div>
             <div>
+              <label className="text-sm font-bold uppercase">Best For</label>
+              <textarea className="mt-1 w-full border-2 border-foreground p-3 bg-background" rows={2} value={form.bestFor || ""} onChange={(e) => setForm({ ...form, bestFor: e.target.value })} />
+            </div>
+            <div>
               <label className="text-sm font-bold uppercase">Hero image URL</label>
               <input className="mt-1 w-full border-2 border-foreground p-3 bg-background" value={form.heroImage} onChange={(e) => setForm({ ...form, heroImage: e.target.value })} />
               <div className="mt-2 flex items-center gap-2">
@@ -226,6 +236,26 @@ export default function AdminPage() {
                 <div className="mt-2 border-2 border-foreground p-2">
                   <img src={form.heroImage} alt={form.heroAlt || "Hero image"} className="max-h-40 w-full object-cover" />
                 </div>
+              )}
+            </div>
+            <div>
+              <label className="text-sm font-bold uppercase">Tags (one per line)</label>
+              <textarea
+                className="mt-1 w-full border-2 border-foreground p-3 bg-background"
+                rows={2}
+                value={(form.tags || []).join("\n")}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    tags: e.target.value
+                      .split("\n")
+                      .map((s) => s.trim())
+                      .filter(Boolean),
+                  })
+                }
+              />
+              {(form.tags || []).length > 0 && (
+                <p className="text-xs mt-1">Tags: {(form.tags || []).join(", ")}</p>
               )}
             </div>
             <div>

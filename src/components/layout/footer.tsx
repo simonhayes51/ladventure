@@ -17,9 +17,9 @@ export function Footer() {
           <div>
             <h3 className="font-bold text-secondary mb-4 uppercase tracking-wider">Company</h3>
             <ul className="space-y-2 text-sm text-gray-300 font-medium">
-              <li><Link href="#about" className="hover:text-secondary transition-colors">About Us</Link></li>
-              <li><Link href="#pricing" className="hover:text-secondary transition-colors">Pricing</Link></li>
-              <li><Link href="#" className="hover:text-secondary transition-colors">Contact</Link></li>
+              <li><Link href="/#about" className="hover:text-secondary transition-colors">About Us</Link></li>
+              <li><Link href="/#pricing" className="hover:text-secondary transition-colors">Pricing</Link></li>
+              <li><Link href="/#contact" className="hover:text-secondary transition-colors">Contact</Link></li>
             </ul>
           </div>
 
@@ -35,8 +35,8 @@ export function Footer() {
           <div>
             <h3 className="font-bold text-secondary mb-4 uppercase tracking-wider">Connect</h3>
             <ul className="space-y-2 text-sm text-gray-300 font-medium">
-              <li><a href="#" className="hover:text-secondary transition-colors">Instagram</a></li>
-              <li><a href="#" className="hover:text-secondary transition-colors">Twitter</a></li>
+              <li><a href="/" className="hover:text-secondary transition-colors">Instagram</a></li>
+              <li><a href="/" className="hover:text-secondary transition-colors">Twitter</a></li>
               <li><a href="mailto:hello@ladventure.co.uk" className="hover:text-secondary transition-colors">hello@ladventure.co.uk</a></li>
             </ul>
           </div>

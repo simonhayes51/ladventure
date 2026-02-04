@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { getGuides } from "@/lib/guides"
-import Image from "next/image"
+import { GuidesFilterGrid } from "@/components/guides/filter-grid"
+
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
 export const dynamic = "force-dynamic"
 export const revalidate = 0
@@ -36,35 +38,7 @@ export default async function GuidesPage() {
       </section>
 
       <section className="py-16 md:py-24">
-        <div className="container mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {guides.map((guide) => {
-            const cardImage = (guide.gallery && guide.gallery[0]) || guide.heroImage
-
-            return (
-              <Link
-                key={guide.slug}
-                href={`/guides/${guide.slug}`}
-                className="bg-white border-2 border-foreground p-6 retro-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all duration-200"
-              >
-                <div className="aspect-[16/9] border-2 border-foreground overflow-hidden mb-3">
-                  <Image
-                    src={cardImage}
-                    alt={guide.heroAlt}
-                    width={800}
-                    height={450}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <p className="text-xs font-bold uppercase text-muted-foreground">{guide.location}</p>
-                <h2 className="text-2xl font-bold text-primary uppercase mt-2">{guide.title}</h2>
-                <p className="text-foreground font-medium mt-3">{guide.excerpt}</p>
-                <span className="mt-4 inline-block text-accent font-bold uppercase text-sm">
-                  Read the guide →
-                </span>
-              </Link>
-            )
-          })}
-        </div>
+        <GuidesFilterGrid guides={guides} />
       </section>
     </div>
   )

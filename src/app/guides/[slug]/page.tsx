@@ -140,7 +140,9 @@ export default async function GuidePage({ params }: GuidePageProps) {
               <div className="border-2 border-foreground bg-white p-5 retro-shadow-sm">
                 <h2 className="text-xl font-bold uppercase text-primary mb-2">Best for</h2>
                 <p className="text-foreground font-medium">
-                  Groups who want clarity, fast planning, and a schedule that keeps everyone together.
+                  {guide.bestFor && guide.bestFor.trim().length > 0
+                    ? guide.bestFor
+                    : "Groups who want clarity, fast planning, and a schedule that keeps everyone together."}
                 </p>
               </div>
             </div>

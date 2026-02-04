@@ -20,6 +20,8 @@ export type Guide = {
   itinerary: { title: string; detail: string }[]
   faq: { question: string; answer: string }[]
   gallery?: string[]
+  tags?: string[]
+  bestFor?: string
 }
 
 /* ---------------- Paths ---------------- */
