@@ -30,7 +30,7 @@ export default async function GuidesPage() {
             Guides & inspiration
           </h1>
           <p className="text-lg text-foreground font-medium max-w-3xl">
-            Publish location guides, sample itineraries, and planning tips as the library grows.
+            Built for SEO and scale — publish location guides, sample itineraries, and planning tips as the library grows.
           </p>
         </div>
       </section>
