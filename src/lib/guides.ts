@@ -21,15 +21,41 @@ const dataPath = path.join(process.cwd(), "data", "guides.json")
 
 export async function getGuides(): Promise<Guide[]> {
   noStore()
+
   try {
     const content = await fs.readFile(dataPath, "utf-8")
-    return JSON.parse(content) as Guide[]
-  } catch {
+    const parsed = JSON.parse(content) as Guide[]
+
+    console.log(
+      "[GUIDES] READ OK",
+      "count:",
+      parsed.length,
+      "pid:",
+      process.pid,
+      "path:",
+      dataPath
+    )
+
+    return parsed
+  } catch (err) {
+    console.log(
+      "[GUIDES] READ FAILED → using seed data",
+      "pid:",
+      process.pid,
+      "path:",
+      dataPath,
+      "error:",
+      err instanceof Error ? err.message : err
+    )
+
     return seedGuides as Guide[]
   }
 }
 
 export async function getGuideBySlug(slug: string): Promise<Guide | undefined> {
   const all = await getGuides()
+
+  console.log("[GUIDES] LOOKUP", "slug:", slug, "found:", !!all.find(g => g.slug === slug))
+
   return all.find((g) => g.slug === slug)
 }
