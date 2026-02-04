@@ -22,9 +22,14 @@ const signals = [
 
 export function TrustSignals() {
   return (
-    <section className="py-20 bg-muted/40 border-t-4 border-foreground relative overflow-hidden">
-      <div className="absolute -right-10 -top-10 w-40 h-40 bg-accent/20 rounded-full blur-xl" />
-      <div className="absolute -left-10 bottom-10 w-32 h-32 bg-secondary/20 rounded-full blur-xl" />
+    <section className="py-20 bg-[#dfe8ff] border-t-4 border-foreground relative overflow-hidden">
+      <div className="absolute inset-0 bg-[linear-gradient(145deg,rgba(54,99,255,0.4),transparent_40%),linear-gradient(315deg,rgba(123,92,255,0.4),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,_rgba(255,255,255,0.65),_transparent_60%)] opacity-80" />
+      <div className="absolute -right-16 -top-14 w-60 h-60 bg-accent/45 rounded-full blur-3xl" />
+      <div className="absolute -left-14 bottom-4 w-52 h-52 bg-secondary/45 rounded-full blur-3xl" />
+      <div className="absolute right-10 top-10 h-3 w-24 bg-secondary border-2 border-foreground retro-shadow-sm" />
+      <div className="absolute left-8 top-24 h-3 w-16 bg-accent border-2 border-foreground retro-shadow-sm" />
+      <div className="absolute right-1/3 bottom-8 h-3 w-20 bg-primary border-2 border-foreground retro-shadow-sm" />
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="max-w-3xl mb-12">
           <h2 className="text-3xl md:text-5xl font-bold text-primary mb-4 retro-text-shadow">

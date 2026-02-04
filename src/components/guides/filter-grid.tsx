@@ -10,9 +10,8 @@
    guides: Guide[]
  }
  
- export function GuidesFilterGrid({ guides }: Props) {
-   const [query, setQuery] = useState("")
-   const [activeTags, setActiveTags] = useState<string[]>([])
+export function GuidesFilterGrid({ guides }: Props) {
+  const [activeTags, setActiveTags] = useState<string[]>([])
  
    const allTags = useMemo(() => {
      const s = new Set<string>()
@@ -24,54 +23,44 @@
      setActiveTags((cur) => (cur.includes(tag) ? cur.filter((t) => t !== tag) : [...cur, tag]))
    }
  
-   const filtered = useMemo(() => {
-     const q = query.trim().toLowerCase()
-     return guides.filter((g) => {
-       const textMatch =
-         !q ||
-         g.title.toLowerCase().includes(q) ||
-         g.location.toLowerCase().includes(q) ||
-         g.excerpt.toLowerCase().includes(q)
-       const tagsMatch =
-         activeTags.length === 0 || (g.tags || []).some((t) => activeTags.includes(t))
-       return textMatch && tagsMatch
-     })
-   }, [guides, query, activeTags])
+  const filtered = useMemo(() => {
+    return guides.filter((g) => {
+      const tagsMatch =
+        activeTags.length === 0 || (g.tags || []).some((t) => activeTags.includes(t))
+      return tagsMatch
+    })
+  }, [guides, activeTags])
  
    return (
      <div className="space-y-6">
-       <div className="container mx-auto px-4 md:px-6">
-         <div className="bg-white border-2 border-foreground p-4 retro-shadow flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
-           <input
-             value={query}
-             onChange={(e) => setQuery(e.target.value)}
-             placeholder="Filter by destination, title, or text…"
-             className="w-full md:max-w-md border-2 border-foreground p-3 bg-background"
-           />
-           {allTags.length > 0 && (
-             <div className="flex flex-wrap gap-2">
-               {allTags.map((tag) => {
-                 const active = activeTags.includes(tag)
-                 return (
-                   <Button
-                     key={tag}
-                     variant={active ? "default" : "outline"}
-                     onClick={() => toggleTag(tag)}
-                     className={active ? "bg-secondary text-secondary-foreground" : ""}
-                   >
-                     {tag}
-                   </Button>
-                 )
-               })}
-               {activeTags.length > 0 && (
-                 <Button variant="destructive" onClick={() => setActiveTags([])}>
-                   Clear Tags
-                 </Button>
-               )}
-             </div>
-           )}
-         </div>
-       </div>
+      <div className="container mx-auto px-4 md:px-6">
+        {allTags.length > 0 && (
+          <div className="bg-white border-2 border-foreground p-3 retro-shadow flex flex-wrap gap-2">
+            {allTags.map((tag) => {
+              const active = activeTags.includes(tag)
+              return (
+                <Button
+                  key={tag}
+                  variant={active ? "default" : "outline"}
+                  onClick={() => toggleTag(tag)}
+                  className={`h-8 px-3 text-xs uppercase ${active ? "bg-secondary text-secondary-foreground" : ""}`}
+                >
+                  {tag}
+                </Button>
+              )
+            })}
+            {activeTags.length > 0 && (
+              <Button
+                variant="destructive"
+                onClick={() => setActiveTags([])}
+                className="h-8 px-3 text-xs uppercase"
+              >
+                Clear Tags
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
  
        <div className="container mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
          {filtered.map((guide) => {
