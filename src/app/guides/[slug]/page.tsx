@@ -7,12 +7,21 @@ import Script from "next/script"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
+type MaybePromise<T> = T | Promise<T>
+
 type GuidePageProps = {
-  params?: { slug?: string }
+  params?: MaybePromise<{ slug?: string }>
+}
+
+async function getSlug(params?: MaybePromise<{ slug?: string }>) {
+  if (!params) return undefined
+  // If Next gives us a Promise-like params, await it.
+  const resolved = typeof (params as any)?.then === "function" ? await (params as Promise<any>) : (params as any)
+  return resolved?.slug as string | undefined
 }
 
 export async function generateMetadata({ params }: GuidePageProps): Promise<Metadata> {
-  const slug = params?.slug
+  const slug = await getSlug(params)
   if (!slug) return { title: "Guide | Ladventure" }
 
   const guide = await getGuideBySlug(slug)
@@ -58,9 +67,10 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
 }
 
 export default async function GuidePage({ params }: GuidePageProps) {
-  console.log("[SLUG PAGE HIT]", "slug:", params?.slug)
+  const slug = await getSlug(params)
 
-  const slug = params?.slug
+  console.log("[SLUG PAGE HIT]", "slug:", slug)
+
   if (!slug) notFound()
 
   const guide = await getGuideBySlug(slug)
