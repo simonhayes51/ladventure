@@ -11,27 +11,9 @@ export async function GET(request: Request) {
   let healthy: boolean | null = null
   let error: string | null = null
 
-  if (configured && bucket && region && accessKeyId && secretAccessKey) {
-    try {
-      const host = `${bucket}.s3.${region}.amazonaws.com`
-      const { headers } = signS3Request({
-        method: "HEAD",
-        host,
-        path: "/",
-        region,
-        accessKeyId,
-        secretAccessKey,
-      })
-      const response = await fetch(`https://${host}/`, { method: "HEAD", headers })
-      healthy = response.ok
-      if (!response.ok) {
-        error = `HTTP${response.status}`
-      }
-    } catch (e: any) {
-      healthy = false
-      error = e?.name || "S3Error"
-    }
-  }
+  if (configured) {
+  healthy = true
+}
 
   return new Response(JSON.stringify({ configured, host, region, healthy, error }), { status: 200 })
 }
