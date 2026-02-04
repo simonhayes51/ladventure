@@ -34,7 +34,6 @@ export async function POST(request: Request) {
     headers: {
       host,
       "content-type": contentTypeValue,
-      "x-amz-acl": "public-read",
     },
     expires: 3600,
   })
