@@ -111,10 +111,19 @@ export default function RootLayout({
         <Script id="tawkto" strategy="afterInteractive">
           {`
             var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-            Tawk_API.onLoad = function() {
+            var hideTawkWidget = function() {
               if (Tawk_API.hideWidget) {
                 Tawk_API.hideWidget();
               }
+            };
+            Tawk_API.onLoad = function() {
+              hideTawkWidget();
+            };
+            Tawk_API.onChatMinimized = function() {
+              hideTawkWidget();
+            };
+            Tawk_API.onUnreadMessages = function() {
+              hideTawkWidget();
             };
             (function() {
               var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
